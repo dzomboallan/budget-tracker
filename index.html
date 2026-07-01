@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budget Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1D9E75;
+  --green-light: #E1F5EE;
+  --green-mid: #0F6E56;
+  --amber: #EF9F27;
+  --amber-light: #FAEEDA;
+  --red: #E24B4A;
+  --red-light: #FCEBEB;
+  --blue: #378ADD;
+  --blue-light: #E6F1FB;
+  --bg: #FAF9F6;
+  --surface: #FFFFFF;
+  --surface2: #F3F1EC;
+  --border: rgba(0,0,0,0.08);
+  --border-mid: rgba(0,0,0,0.14);
+  --text: #1A1916;
+  --text2: #5C5A54;
+  --text3: #9B998F;
+  --radius: 10px;
+  --radius-lg: 16px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* TOP BAR */
+.topbar { background: var(--text); color: white; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
+.topbar-brand { font-family: 'DM Serif Display', serif; font-size: 18px; letter-spacing: -0.3px; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-actions { display: flex; gap: 8px; }
+.topbar-btn { background: rgba(255,255,255,0.12); border: none; color: white; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: background 0.15s; }
+.topbar-btn:hover { background: rgba(255,255,255,0.22); }
+.topbar-btn.accent { background: var(--green); }
+.topbar-btn.accent:hover { background: var(--green-mid); }
+.topbar-btn.danger { background: rgba(226,75,74,0.25); }
+.topbar-btn.danger:hover { background: rgba(226,75,74,0.4); }
+
+/* SYNC STATUS */
+.sync-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); border-radius: 20px; padding: 5px 12px; transition: all 0.2s; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
+.sync-pill.synced .sync-dot { background: var(--green); }
+.sync-pill.syncing .sync-dot { background: var(--amber); animation: pulse 1s infinite; }
+.sync-pill.error .sync-dot { background: var(--red); }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+/* USER AVATAR */
+.user-chip { display: flex; align-items: center; gap: 7px; font-size: 12px; color: rgba(255,255,255,0.8); }
+.user-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.25); }
+.user-avatar-placeholder { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+
+/* AUTH SCREEN */
+.auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 56px); padding: 2rem; text-align: center; }
+.auth-icon { font-size: 48px; margin-bottom: 1.5rem; }
+.auth-title { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 0.75rem; }
+.auth-sub { font-size: 14px; color: var(--text2); max-width: 420px; line-height: 1.6; margin-bottom: 2rem; }
+.auth-features { display: flex; flex-direction: column; gap: 8px; margin-bottom: 2rem; text-align: left; max-width: 360px; }
+.auth-feature { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text2); }
+.auth-feature-icon { color: var(--green); font-size: 16px; flex-shrink: 0; }
+.sign-in-btn { display: flex; align-items: center; gap: 10px; background: white; border: 1.5px solid var(--border-mid); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 11px 24px; border-radius: 12px; cursor: pointer; transition: all 0.15s; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.sign-in-btn:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(29,158,117,0.15); }
+.sign-in-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+.auth-note { font-size: 12px; color: var(--text3); margin-top: 1.25rem; max-width: 380px; line-height: 1.5; }
+
+/* LAYOUT */
+.layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 56px); }
+.sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.25rem 0; overflow-y: auto; }
+.sidebar-section { padding: 0 1rem; margin-bottom: 1.25rem; }
+.sidebar-label { font-size: 10px; font-weight: 500; letter-spacing: 1px; color: var(--text3); text-transform: uppercase; padding: 0 0.5rem; margin-bottom: 6px; }
+.month-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; border-radius: var(--radius); cursor: pointer; font-size: 13px; color: var(--text2); transition: all 0.12s; margin-bottom: 2px; }
+.month-item:hover { background: var(--surface2); color: var(--text); }
+.month-item.active { background: var(--text); color: white; }
+.month-item .month-name { font-weight: 500; }
+.month-item .month-bal { font-size: 11px; opacity: 0.7; }
+.month-item.active .month-bal { opacity: 0.8; }
+.new-month-btn { width: 100%; border: 1.5px dashed var(--border-mid); background: none; border-radius: var(--radius); padding: 9px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text3); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.15s; margin-top: 4px; }
+.new-month-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-light); }
+.del-month-btn { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 14px; opacity: 0; padding: 2px 4px; border-radius: 4px; line-height: 1; }
+.month-item:hover .del-month-btn { opacity: 1; }
+.month-item.active .del-month-btn { opacity: 0.6; }
+.month-item.active .del-month-btn:hover { opacity: 1; }
+
+/* MAIN */
+.main { padding: 2rem; overflow-y: auto; }
+.main-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.75rem; gap: 1rem; }
+.main-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); }
+.main-sub { font-size: 13px; color: var(--text3); margin-top: 3px; }
+.header-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.btn { border: 1px solid var(--border-mid); background: var(--surface); color: var(--text2); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 7px 14px; border-radius: var(--radius); cursor: pointer; transition: all 0.12s; }
+.btn:hover { background: var(--surface2); color: var(--text); }
+.btn.primary { background: var(--text); color: white; border-color: var(--text); }
+.btn.primary:hover { background: #333; }
+
+/* SUMMARY CARDS */
+.summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 2rem; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.5px; color: var(--text3); text-transform: uppercase; margin-bottom: 6px; }
+.card-value { font-size: 22px; font-weight: 500; color: var(--text); }
+.card-value.good { color: var(--green); }
+.card-value.warn { color: var(--amber); }
+.card-value.bad { color: var(--red); }
+.card-bar { width: 100%; height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.card-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+.card-note { font-size: 11px; color: var(--text3); margin-top: 5px; }
+
+/* INCOME BAR */
+.income-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.5rem; }
+.income-row label { font-size: 13px; color: var(--text2); flex-shrink: 0; }
+.income-input { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; border: 1px solid var(--border-mid); border-radius: var(--radius); padding: 6px 12px; width: 160px; color: var(--text); background: var(--bg); }
+.income-input:focus { outline: none; border-color: var(--green); }
+.income-hint { font-size: 12px; color: var(--text3); margin-left: auto; }
+
+/* SECTIONS */
+.section { margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
+.section-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; background: var(--surface); transition: background 0.12s; user-select: none; }
+.section-head:hover { background: var(--surface2); }
+.section-head .chevron { font-size: 13px; color: var(--text3); transition: transform 0.2s; flex-shrink: 0; }
+.section-head.open .chevron { transform: rotate(180deg); }
+.section-head-info { flex: 1; min-width: 0; }
+.section-head-name { font-size: 14px; font-weight: 500; color: var(--text); }
+.section-head-meta { font-size: 12px; color: var(--text3); margin-top: 1px; }
+.priority-chip { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 20px; flex-shrink: 0; letter-spacing: 0.3px; }
+.chip-vhigh { background: #EAF3DE; color: #3B6D11; }
+.chip-high { background: var(--blue-light); color: #185FA5; }
+.chip-med { background: var(--amber-light); color: #854F0B; }
+.chip-low { background: var(--surface2); color: var(--text3); }
+.section-prog { height: 3px; background: var(--surface2); }
+.section-prog-fill { height: 100%; transition: width 0.3s; }
+.section-body { display: none; }
+.section-body.open { display: block; }
+
+/* ITEMS TABLE */
+.items-table { width: 100%; border-collapse: collapse; }
+.items-table thead th { font-size: 10px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); padding: 8px 16px; text-align: left; background: var(--surface2); border-bottom: 1px solid var(--border); }
+.items-table thead th:last-child, .items-table thead th:nth-child(2) { text-align: right; }
+.items-table tbody tr { border-bottom: 1px solid var(--border); }
+.items-table tbody tr:last-child { border-bottom: none; }
+.item-name { font-size: 13px; color: var(--text); padding: 10px 16px; }
+.item-budget { font-size: 13px; color: var(--text2); padding: 10px 16px; text-align: right; }
+.item-spent-cell { padding: 6px 16px; text-align: right; }
+.item-spent-cell input { font-family: 'DM Sans', sans-serif; font-size: 13px; width: 110px; border: 1px solid var(--border-mid); border-radius: 8px; padding: 5px 10px; text-align: right; color: var(--text); background: var(--bg); transition: border-color 0.15s; }
+.item-spent-cell input:focus { outline: none; border-color: var(--green); }
+.item-status { padding: 6px 16px; text-align: right; }
+.badge { font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; white-space: nowrap; display: inline-block; }
+.badge-pending { background: var(--surface2); color: var(--text3); }
+.badge-done { background: var(--green-light); color: var(--green-mid); }
+.badge-over { background: var(--red-light); color: #A32D2D; }
+.badge-exact { background: var(--blue-light); color: #185FA5; }
+
+/* ADD ITEM ROW */
+.add-item-row { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--surface2); border-top: 1px solid var(--border); }
+.add-item-row input { font-family: 'DM Sans', sans-serif; font-size: 13px; border: 1px solid var(--border-mid); border-radius: 8px; padding: 5px 10px; background: var(--surface); color: var(--text); }
+.add-item-row input:focus { outline: none; border-color: var(--green); }
+.item-inline-input { font-family: 'DM Sans', sans-serif; font-size: 13px; border: 1px solid transparent; border-radius: 7px; padding: 4px 8px; background: transparent; color: var(--text); width: 100%; transition: border-color 0.15s, background 0.15s; }
+.item-inline-input:hover { border-color: var(--border-mid); background: var(--bg); }
+.item-inline-input:focus { outline: none; border-color: var(--green); background: var(--bg); }
+.budget-inline { text-align: right; width: 120px; }
+.del-item-btn { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 13px; padding: 2px 5px; border-radius: 5px; opacity: 0; transition: opacity 0.15s, color 0.15s; flex-shrink: 0; }
+tr:hover .del-item-btn { opacity: 1; }
+.del-item-btn:hover { color: var(--red); }
+.add-item-row input.name-input { flex: 1; }
+.add-item-row input.amount-input { width: 110px; text-align: right; }
+.add-item-btn { background: var(--green); color: white; border: none; border-radius: 8px; padding: 5px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; }
+.add-item-btn:hover { background: var(--green-mid); }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 4rem 2rem; }
+.empty-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--text2); margin-bottom: 8px; }
+.empty-sub { font-size: 14px; color: var(--text3); margin-bottom: 1.5rem; }
+
+/* MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border-radius: var(--radius-lg); padding: 1.75rem; width: 420px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+.modal-title { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 1.25rem; }
+.form-group { margin-bottom: 1rem; }
+.form-label { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 5px; display: block; letter-spacing: 0.3px; }
+.form-input { width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px; border: 1px solid var(--border-mid); border-radius: var(--radius); padding: 8px 12px; color: var(--text); background: var(--bg); }
+.form-input:focus { outline: none; border-color: var(--green); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
+.modal-note { font-size: 12px; color: var(--text3); margin-top: 0.75rem; font-style: italic; }
+
+/* HISTORY VIEW */
+.history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.history-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; cursor: pointer; transition: all 0.15s; }
+.history-card:hover { border-color: var(--green); box-shadow: 0 2px 12px rgba(29,158,117,0.1); }
+.history-card-month { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--text); margin-bottom: 4px; }
+.history-card-income { font-size: 12px; color: var(--text3); margin-bottom: 12px; }
+.history-stat { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 5px; }
+.history-stat-label { color: var(--text2); }
+.history-stat-value { font-weight: 500; }
+.history-bar { width: 100%; height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.history-bar-fill { height: 100%; border-radius: 2px; }
+
+/* TABS */
+.tabs { display: flex; gap: 4px; background: var(--surface2); padding: 4px; border-radius: var(--radius); margin-bottom: 1.5rem; width: fit-content; }
+.tab { font-size: 13px; padding: 6px 16px; border-radius: 7px; cursor: pointer; border: none; background: none; font-family: 'DM Sans', sans-serif; color: var(--text2); transition: all 0.12s; }
+.tab.active { background: var(--surface); color: var(--text); font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+/* TOAST */
+.toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+.toast { background: var(--text); color: white; font-size: 13px; padding: 10px 18px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; display: flex; align-items: center; gap: 8px; max-width: 320px; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.green { background: var(--green-mid); }
+.toast.red { background: #A32D2D; }
+.toast.amber { background: #7A4A00; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .summary { grid-template-columns: repeat(2, 1fr); }
+  .main { padding: 1rem; }
+}
+@media (max-width: 560px) {
+  .summary { grid-template-columns: 1fr 1fr; }
+  .items-table thead th:nth-child(2) { display: none; }
+  .item-budget { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-brand">📊 Budget Tracker</span>
+  <div class="topbar-right">
+    <div id="syncStatus" class="sync-pill" style="display:none">
+      <div class="sync-dot"></div>
+      <span id="syncLabel">Not synced</span>
+    </div>
+    <div id="userChip" class="user-chip" style="display:none"></div>
+    <div class="topbar-actions" id="topbarActions">
+      <button class="topbar-btn" onclick="showView('history')" id="historyBtn" style="display:none">History</button>
+      <button class="topbar-btn accent" onclick="openNewMonthModal()" id="newMonthBtn" style="display:none">+ New month</button>
+      <button class="topbar-btn" onclick="handleSignIn()" id="signInTopBtn">Sign in with Google</button>
+      <button class="topbar-btn danger" onclick="handleSignOut()" id="signOutBtn" style="display:none">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<!-- Auth screen (shown when signed out) -->
+<div id="authScreen">
+  <div class="auth-screen">
+    <div class="auth-icon">📊</div>
+    <div class="auth-title">Budget Tracker</div>
+    <div class="auth-sub">Sign in with Google to sync your budget data across all your devices. Your data is stored as a single file in your own Google Drive.</div>
+    <div class="auth-features">
+      <div class="auth-feature"><span class="auth-feature-icon">☁️</span> Data stored in your own Google Drive</div>
+      <div class="auth-feature"><span class="auth-feature-icon">🔄</span> Syncs automatically across devices</div>
+      <div class="auth-feature"><span class="auth-feature-icon">🔒</span> Private — only you have access</div>
+      <div class="auth-feature"><span class="auth-feature-icon">📁</span> One JSON file: <code style="font-size:12px;background:var(--surface2);padding:1px 6px;border-radius:4px">budget-tracker-data.json</code></div>
+    </div>
+    <button class="sign-in-btn" onclick="handleSignIn()">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Sign in with Google
+    </button>
+    <p class="auth-note">This app requests access only to files it creates. It will not read any other files in your Drive.</p>
+  </div>
+</div>
+
+<!-- Main app (shown when signed in) -->
+<div id="appShell" style="display:none">
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Months</div>
+        <div id="monthList"></div>
+        <button class="new-month-btn" onclick="openNewMonthModal()">
+          <span>＋</span> New month
+        </button>
+      </div>
+    </aside>
+
+    <main class="main" id="mainContent">
+      <div class="empty">
+        <div class="empty-title">Loading your data…</div>
+        <div class="empty-sub">Syncing from Google Drive.</div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- New Month Modal -->
+<div class="modal-overlay" id="newMonthModal">
+  <div class="modal">
+    <div class="modal-title">Create new month</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Month</label>
+        <select class="form-input" id="newMonthMonth">
+          <option value="January">January</option><option value="February">February</option>
+          <option value="March">March</option><option value="April">April</option>
+          <option value="May" selected>May</option><option value="June">June</option>
+          <option value="July">July</option><option value="August">August</option>
+          <option value="September">September</option><option value="October">October</option>
+          <option value="November">November</option><option value="December">December</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Year</label>
+        <input class="form-input" type="number" id="newMonthYear" value="2026" min="2020" max="2040">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Monthly income (Ksh)</label>
+      <input class="form-input" type="number" id="newMonthIncome" value="55000" min="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Start from template</label>
+      <select class="form-input" id="newMonthTemplate">
+        <option value="may2026">May 2026 (your current plan)</option>
+        <option value="blank">Blank — I'll add items myself</option>
+        <option value="copy">Copy from previous month</option>
+      </select>
+    </div>
+    <p class="modal-note">Tip: use "Copy from previous month" for months you want to reuse similar categories and budgets.</p>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('newMonthModal')">Cancel</button>
+      <button class="btn primary" onclick="createMonth()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Section Modal -->
+<div class="modal-overlay" id="newSectionModal">
+  <div class="modal">
+    <div class="modal-title">Add category</div>
+    <div class="form-group">
+      <label class="form-label">Category name</label>
+      <input class="form-input" id="newSectionName" placeholder="e.g. Utilities, Investments…">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Priority</label>
+      <select class="form-input" id="newSectionPriority">
+        <option value="vhigh">Very high</option>
+        <option value="high">High</option>
+        <option value="med" selected>Medium</option>
+        <option value="low">Low</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal('newSectionModal')">Cancel</button>
+      <button class="btn primary" onclick="addSection()">Add category</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ─────────────────────────────────────────────────────────────────────────
+     GOOGLE IDENTITY / DRIVE CONFIGURATION
+     ──────────────────────────────────────────────────────────────────────
+     SETUP INSTRUCTIONS:
+     1. Go to https://console.cloud.google.com/
+     2. Create a project (or select an existing one)
+     3. Enable these APIs: "Google Drive API" and "Google Picker API"
+     4. Under "Credentials", create an OAuth 2.0 Client ID (Web application)
+        - Add your file's origin to Authorized JavaScript Origins
+          e.g. http://localhost or file:// or https://yourdomain.com
+     5. Create an API Key under Credentials
+     6. Paste both values below
+     ──────────────────────────────────────────────────────────────────────── -->
+<script>
+  const GOOGLE_CLIENT_ID = '5482793251-ujlorv6sspjf4ntrcg1uqfepd4rf6eut.apps.googleusercontent.com';
+  const GOOGLE_API_KEY   = 'AIzaSyBL-OwhJ7whZtjH--rNeSoivhh4IblysB8';
+  const DRIVE_FILE_NAME  = 'budget-tracker-data.json';
+  const DRIVE_SCOPES     = 'https://www.googleapis.com/auth/drive.file';
+</script>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://apis.google.com/js/api.js" async defer onload="gapiLoaded()"></script>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let db = { months: {} };
+let activeMonthId = null;
+let currentView = 'tracker';
+let driveFileId = null;       // ID of budget-tracker-data.json in Drive
+let accessToken = null;       // current OAuth access token
+let saveTimer = null;         // debounce timer for Drive writes
+let gapiReady = false;
+let gisReady = false;
+let tokenClient = null;
+
+// ─── TEMPLATE DATA ───────────────────────────────────────────────────────────
+const MAY_TEMPLATE = [
+  { id: 'basics', name: 'Basics', priority: 'vhigh', open: true, items: [
+    {n:'Rent',b:8000},{n:'Transport',b:6000},{n:'Shopping',b:5000},{n:'Hair',b:1000},{n:'Sanlam',b:5000},{n:'Ziidi',b:5000},{n:'Data',b:1000}
+  ]},
+  { id: 'commitment', name: 'Commitments', priority: 'vhigh', open: true, items: [
+    {n:'Home token',b:1000},{n:'Mum and Dad',b:4000}
+  ]},
+  { id: 'st_high', name: 'Short term — high priority', priority: 'high', open: false, items: [
+    {n:'Pants',b:2000},{n:'Sneakers',b:3500},{n:'Sweatshirt',b:1500},{n:'Iron box',b:3000},{n:'Bike',b:20000},{n:'Drawing supplies',b:15000},{n:'Passport',b:13000}
+  ]},
+  { id: 'st_med', name: 'Short term — medium priority', priority: 'med', open: false, items: [
+    {n:'Pick certificate from Kisii',b:6000}
+  ]},
+  { id: 'lt_high', name: 'Long term — high priority', priority: 'high', open: false, items: [
+    {n:'ABSA shares (400)',b:20000},{n:'CO-OP shares (500)',b:20000},{n:'Clear pending debts',b:15000},{n:'Electric kettle',b:6000},{n:'Cookware',b:12000}
+  ]},
+  { id: 'lt_med', name: 'Long term — medium priority', priority: 'med', open: false, items: [
+    {n:'Carpet',b:20000},{n:'Sofa',b:50000},{n:'Iron board',b:3000}
+  ]},
+  { id: 'lt_low', name: 'Long term — low priority', priority: 'low', open: false, items: [
+    {n:'Curtains',b:20000},{n:'Sony HT-S500RF',b:50000},{n:'Coffee table',b:15000},{n:'Water dispenser',b:30000},{n:'Screen',b:80000},{n:'Kenyan flag',b:2000},{n:'TV stand',b:20000},{n:'Blender',b:6000},{n:'Microwave',b:20000},{n:'Fridge',b:70000},{n:'Washing machine 9kg front load',b:100000}
+  ]}
+];
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function ksh(v) { return 'Ksh ' + Math.round(v).toLocaleString(); }
+function monthId(m, y) { return `${y}_${m}`; }
+
+function showToast(msg, type = '', duration = 3000) {
+  const container = document.getElementById('toastContainer');
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  container.appendChild(el);
+  requestAnimationFrame(() => { requestAnimationFrame(() => { el.classList.add('show'); }); });
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 300);
+  }, duration);
+}
+
+function setSyncStatus(state, label) {
+  const pill = document.getElementById('syncStatus');
+  const lbl = document.getElementById('syncLabel');
+  pill.className = `sync-pill ${state}`;
+  lbl.textContent = label;
+  pill.style.display = 'flex';
+}
+
+// ─── GOOGLE API LOADING ──────────────────────────────────────────────────────
+function gapiLoaded() {
+  gapi.load('client', async () => {
+    await gapi.client.init({ apiKey: GOOGLE_API_KEY, discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] });
+    gapiReady = true;
+    maybeInitGis();
+  });
+}
+
+function maybeInitGis() {
+  if (!gapiReady) return;
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: DRIVE_SCOPES,
+    callback: handleTokenResponse,
+  });
+  gisReady = true;
+
+  // If user already granted previously, try to restore silently
+  const savedToken = sessionStorage.getItem('gapi_access_token');
+  if (savedToken) {
+    accessToken = savedToken;
+    gapi.client.setToken({ access_token: accessToken });
+    showAppShell();
+    loadFromDrive();
+  }
+}
+
+function handleTokenResponse(resp) {
+  if (resp.error) {
+    showToast('Sign-in failed: ' + resp.error, 'red');
+    return;
+  }
+  accessToken = resp.access_token;
+  sessionStorage.setItem('gapi_access_token', accessToken);
+  gapi.client.setToken({ access_token: accessToken });
+  showAppShell();
+  loadFromDrive();
+}
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function handleSignIn() {
+  if (!gisReady) { showToast('Google APIs still loading, please wait…', 'amber'); return; }
+  tokenClient.requestAccessToken({ prompt: '' });
+}
+
+function handleSignOut() {
+  if (accessToken) {
+    google.accounts.oauth2.revoke(accessToken, () => {});
+    accessToken = null;
+    sessionStorage.removeItem('gapi_access_token');
+    gapi.client.setToken(null);
+  }
+  driveFileId = null;
+  db = { months: {} };
+  activeMonthId = null;
+  showAuthScreen();
+  showToast('Signed out successfully');
+}
+
+function showAuthScreen() {
+  document.getElementById('authScreen').style.display = '';
+  document.getElementById('appShell').style.display = 'none';
+  document.getElementById('signInTopBtn').style.display = '';
+  document.getElementById('signOutBtn').style.display = 'none';
+  document.getElementById('historyBtn').style.display = 'none';
+  document.getElementById('newMonthBtn').style.display = 'none';
+  document.getElementById('syncStatus').style.display = 'none';
+  document.getElementById('userChip').style.display = 'none';
+}
+
+function showAppShell() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appShell').style.display = '';
+  document.getElementById('signInTopBtn').style.display = 'none';
+  document.getElementById('signOutBtn').style.display = '';
+  document.getElementById('historyBtn').style.display = '';
+  document.getElementById('newMonthBtn').style.display = '';
+
+  // Show user info
+  fetchUserInfo();
+}
+
+async function fetchUserInfo() {
+  try {
+    const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: 'Bearer ' + accessToken }
+    });
+    const info = await res.json();
+    const chip = document.getElementById('userChip');
+    if (info.picture) {
+      chip.innerHTML = `<img class="user-avatar" src="${info.picture}" alt="${info.name || ''}"><span>${info.given_name || info.name || ''}</span>`;
+    } else {
+      const initials = (info.name || '?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      chip.innerHTML = `<div class="user-avatar-placeholder">${initials}</div><span>${info.given_name || info.name || ''}</span>`;
+    }
+    chip.style.display = 'flex';
+  } catch(e) {}
+}
+
+// ─── DRIVE I/O ────────────────────────────────────────────────────────────────
+
+async function findDriveFile() {
+  const res = await gapi.client.drive.files.list({
+    q: `name='${DRIVE_FILE_NAME}' and trashed=false and 'appDataFolder' in parents`,
+    spaces: 'appDataFolder',
+    fields: 'files(id,name)',
+    pageSize: 1,
+  });
+  const files = res.result.files || [];
+  return files.length ? files[0].id : null;
+}
+
+async function findDriveFileInRoot() {
+  // Fallback: look in drive root (drive.file scope only sees files the app created)
+  const res = await gapi.client.drive.files.list({
+    q: `name='${DRIVE_FILE_NAME}' and trashed=false`,
+    fields: 'files(id,name)',
+    pageSize: 1,
+  });
+  const files = res.result.files || [];
+  return files.length ? files[0].id : null;
+}
+
+async function readDriveFile(fileId) {
+  const res = await gapi.client.request({
+    path: `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
+    method: 'GET',
+  });
+  return res.body; // raw JSON string
+}
+
+async function createDriveFile(content) {
+  const metadata = { name: DRIVE_FILE_NAME, mimeType: 'application/json' };
+  const form = new FormData();
+  form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+  form.append('file', new Blob([content], { type: 'application/json' }));
+
+  const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + accessToken },
+    body: form,
+  });
+  const data = await res.json();
+  return data.id;
+}
+
+async function updateDriveFile(fileId, content) {
+  await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: 'Bearer ' + accessToken,
+      'Content-Type': 'application/json',
+    },
+    body: content,
+  });
+}
+
+async function loadFromDrive() {
+  setSyncStatus('syncing', 'Loading…');
+  try {
+    let fileId = await findDriveFileInRoot();
+    if (fileId) {
+      driveFileId = fileId;
+      const raw = await readDriveFile(fileId);
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.months) db = parsed;
+    }
+    // else: no file yet → fresh start, will be created on first save
+    setSyncStatus('synced', 'Synced');
+    renderSidebar();
+    const months = Object.values(db.months).sort((a,b) => {
+      if (b.year !== a.year) return b.year - a.year;
+      const mo = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      return mo.indexOf(b.month) - mo.indexOf(a.month);
+    });
+    if (months.length) { activeMonthId = months[0].id; renderTracker(); }
+    else { document.getElementById('mainContent').innerHTML = `<div class="empty"><div class="empty-title">No months yet</div><div class="empty-sub">Create your first month to start tracking.</div><button class="btn primary" onclick="openNewMonthModal()">+ Create month</button></div>`; }
+  } catch(e) {
+    setSyncStatus('error', 'Sync error');
+    showToast('Could not load from Drive: ' + e.message, 'red');
+    console.error(e);
+  }
+}
+
+async function saveToDrive() {
+  setSyncStatus('syncing', 'Saving…');
+  try {
+    const content = JSON.stringify(db, null, 2);
+    if (driveFileId) {
+      await updateDriveFile(driveFileId, content);
+    } else {
+      driveFileId = await createDriveFile(content);
+    }
+    setSyncStatus('synced', 'Saved to Drive');
+  } catch(e) {
+    setSyncStatus('error', 'Save failed');
+    showToast('Save to Drive failed: ' + e.message, 'red');
+    console.error(e);
+  }
+}
+
+// Debounced save — waits 800ms after last change before writing to Drive
+function saveDb() {
+  clearTimeout(saveTimer);
+  setSyncStatus('syncing', 'Unsaved changes…');
+  saveTimer = setTimeout(saveToDrive, 800);
+}
+
+// ─── MONTH MANAGEMENT ────────────────────────────────────────────────────────
+function createMonth() {
+  const m = document.getElementById('newMonthMonth').value;
+  const y = parseInt(document.getElementById('newMonthYear').value);
+  const income = parseFloat(document.getElementById('newMonthIncome').value) || 0;
+  const tpl = document.getElementById('newMonthTemplate').value;
+  const id = monthId(m, y);
+
+  if (db.months[id]) { showToast('That month already exists.', 'amber'); return; }
+
+  let sections;
+  if (tpl === 'may2026') {
+    sections = JSON.parse(JSON.stringify(MAY_TEMPLATE)).map(s => ({ ...s, items: s.items.map(i => ({...i, spent: ''})) }));
+  } else if (tpl === 'copy' && activeMonthId && db.months[activeMonthId]) {
+    sections = JSON.parse(JSON.stringify(db.months[activeMonthId].sections)).map(s => ({
+      ...s, items: s.items.map(i => ({ ...i, spent: '' }))
+    }));
+  } else {
+    sections = [];
+  }
+
+  db.months[id] = { id, month: m, year: y, income, sections, created: Date.now() };
+  saveDb();
+  closeModal('newMonthModal');
+  renderSidebar();
+  selectMonth(id);
+}
+
+function deleteMonth(id, e) {
+  e.stopPropagation();
+  if (!confirm('Delete this month? This cannot be undone.')) return;
+  delete db.months[id];
+  saveDb();
+  if (activeMonthId === id) activeMonthId = null;
+  renderSidebar();
+  if (activeMonthId) selectMonth(activeMonthId);
+  else document.getElementById('mainContent').innerHTML = `<div class="empty"><div class="empty-title">No month selected</div><div class="empty-sub">Create or select a month.</div><button class="btn primary" onclick="openNewMonthModal()">+ Create month</button></div>`;
+}
+
+function selectMonth(id) {
+  activeMonthId = id;
+  currentView = 'tracker';
+  renderSidebar();
+  renderTracker();
+}
+
+// ─── SIDEBAR ─────────────────────────────────────────────────────────────────
+function renderSidebar() {
+  const list = document.getElementById('monthList');
+  const months = Object.values(db.months).sort((a, b) => {
+    if (b.year !== a.year) return b.year - a.year;
+    const mo = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return mo.indexOf(b.month) - mo.indexOf(a.month);
+  });
+  list.innerHTML = months.map(mo => {
+    const totalSpent = mo.sections.flatMap(s => s.items).reduce((a, i) => a + (parseFloat(i.spent) || 0), 0);
+    const bal = mo.income - totalSpent;
+    const isActive = mo.id === activeMonthId;
+    return `<div class="month-item ${isActive ? 'active' : ''}" onclick="selectMonth('${mo.id}')">
+      <div>
+        <div class="month-name">${mo.month} ${mo.year}</div>
+        <div class="month-bal">${ksh(bal)} left</div>
+      </div>
+      <button class="del-month-btn" onclick="deleteMonth('${mo.id}', event)" title="Delete month">✕</button>
+    </div>`;
+  }).join('');
+}
+
+// ─── TRACKER VIEW ────────────────────────────────────────────────────────────
+function renderTracker() {
+  if (!activeMonthId || !db.months[activeMonthId]) return;
+  const mo = db.months[activeMonthId];
+
+  const allItems = mo.sections.flatMap(s => s.items);
+  const totalBudget = allItems.reduce((a, i) => a + i.b, 0);
+  const totalSpent = allItems.reduce((a, i) => a + (parseFloat(i.spent) || 0), 0);
+  const balance = mo.income - totalSpent;
+  const pct = mo.income ? Math.min(100, Math.round(totalSpent / mo.income * 100)) : 0;
+
+  const barColor = totalSpent > mo.income ? '#E24B4A' : totalSpent > mo.income * 0.85 ? '#EF9F27' : '#1D9E75';
+  const balClass = balance < 0 ? 'bad' : balance < 5000 ? 'warn' : 'good';
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="main-header">
+      <div>
+        <div class="main-title">${mo.month} ${mo.year}</div>
+        <div class="main-sub">Track your spending below. Changes sync to Drive automatically.</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn" onclick="openNewSectionModal()">+ Category</button>
+        <button class="btn primary" onclick="showView('history')">View history</button>
+      </div>
+    </div>
+
+    <div class="income-row">
+      <label for="incomeInput">Monthly income</label>
+      <input class="income-input" type="number" id="incomeInput" value="${mo.income}" onchange="updateIncome(this.value)" placeholder="Enter income">
+      <span class="income-hint">All figures in Kenyan Shillings (Ksh)</span>
+    </div>
+
+    <div class="summary">
+      <div class="card">
+        <div class="card-label">Income</div>
+        <div class="card-value">${ksh(mo.income)}</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Spent so far</div>
+        <div class="card-value ${totalSpent > mo.income ? 'bad' : 'warn'}">${ksh(totalSpent)}</div>
+        <div class="card-bar"><div class="card-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+        <div class="card-note">${pct}% of income</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Remaining</div>
+        <div class="card-value ${balClass}">${ksh(balance)}</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Total budgeted</div>
+        <div class="card-value">${ksh(totalBudget)}</div>
+        <div class="card-note">${mo.sections.flatMap(s=>s.items).length} items across ${mo.sections.length} categories</div>
+      </div>
+    </div>
+
+    <div id="sectionsContainer">
+      ${mo.sections.map((sec, si) => renderSection(sec, si)).join('')}
+    </div>
+  `;
+}
+
+function renderSection(sec, si) {
+  const totalBudget = sec.items.reduce((a, i) => a + i.b, 0);
+  const totalSpent = sec.items.reduce((a, i) => a + (parseFloat(i.spent) || 0), 0);
+  const pct = totalBudget ? Math.min(100, Math.round(totalSpent / totalBudget * 100)) : 0;
+  const barColor = totalSpent > totalBudget ? '#E24B4A' : totalSpent > totalBudget * 0.8 ? '#EF9F27' : '#1D9E75';
+  const chipMap = { vhigh: ['chip-vhigh', 'Very high'], high: ['chip-high', 'High'], med: ['chip-med', 'Medium'], low: ['chip-low', 'Low'] };
+  const [chipClass, chipLabel] = chipMap[sec.priority] || chipMap.med;
+  const isOpen = sec.open;
+
+  return `<div class="section" id="sec_${sec.id}">
+    <div class="section-head ${isOpen ? 'open' : ''}" onclick="toggleSection('${sec.id}', ${si})">
+      <div class="section-head-info">
+        <div class="section-head-name">${sec.name}</div>
+        <div class="section-head-meta">${ksh(totalSpent)} spent / ${ksh(totalBudget)} budgeted</div>
+      </div>
+      <span class="priority-chip ${chipClass}">${chipLabel}</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-prog"><div class="section-prog-fill" style="width:${pct}%;background:${barColor}"></div></div>
+    <div class="section-body ${isOpen ? 'open' : ''}" id="body_${sec.id}">
+      <table class="items-table">
+        <thead><tr>
+          <th>Item</th>
+          <th>Budgeted</th>
+          <th>Spent</th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody>
+          ${sec.items.map((item, ii) => renderItem(sec.id, si, item, ii)).join('')}
+        </tbody>
+      </table>
+      <div class="add-item-row">
+        <input class="name-input" type="text" placeholder="New item name" id="newName_${sec.id}">
+        <input class="amount-input" type="number" placeholder="Budget (Ksh)" id="newBudget_${sec.id}">
+        <button class="add-item-btn" onclick="addItem('${sec.id}', ${si})">Add</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderItem(secId, si, item, ii) {
+  const spent = item.spent !== undefined && item.spent !== '' ? parseFloat(item.spent) || 0 : null;
+  let badge = '<span class="badge badge-pending">pending</span>';
+  if (spent !== null && spent > 0) {
+    if (spent > item.b) badge = '<span class="badge badge-over">over budget</span>';
+    else if (spent === item.b) badge = '<span class="badge badge-exact">exact</span>';
+    else badge = '<span class="badge badge-done">\u2713 done</span>';
+  }
+  const safeName = item.n.replace(/"/g, '&quot;');
+  return `<tr>
+    <td class="item-name"><input class="item-inline-input name-inline" type="text" value="${safeName}" onchange="updateItemName('${secId}', ${ii}, this.value)" aria-label="Item name"></td>
+    <td class="item-budget"><input class="item-inline-input budget-inline" type="number" value="${item.b}" onchange="updateItemBudget('${secId}', ${ii}, this.value)" aria-label="Budgeted amount"></td>
+    <td class="item-spent-cell"><input type="number" value="${item.spent || ''}" placeholder="0" onchange="updateSpent('${secId}', ${ii}, this.value)" aria-label="Spent on ${item.n}"></td>
+    <td class="item-status" style="display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:6px 16px">${badge}<button class="del-item-btn" onclick="deleteItem('${secId}', ${si}, ${ii})" title="Delete item">\u2715</button></td>
+  </tr>`;
+}
+
+function updateItemName(secId, itemIdx, val) {
+  if (!activeMonthId) return;
+  const sec = db.months[activeMonthId].sections.find(s => s.id === secId);
+  if (!sec) return;
+  sec.items[itemIdx].n = val.trim() || sec.items[itemIdx].n;
+  saveDb();
+}
+
+function updateItemBudget(secId, itemIdx, val) {
+  if (!activeMonthId) return;
+  const sec = db.months[activeMonthId].sections.find(s => s.id === secId);
+  if (!sec) return;
+  sec.items[itemIdx].b = parseFloat(val) || 0;
+  saveDb();
+  refreshSummary();
+  refreshSection(secId);
+  renderSidebar();
+}
+
+function deleteItem(secId, si, itemIdx) {
+  if (!activeMonthId) return;
+  const mo = db.months[activeMonthId];
+  const sec = mo.sections.find(s => s.id === secId);
+  if (!sec) return;
+  sec.items.splice(itemIdx, 1);
+  saveDb();
+  refreshSummary();
+  refreshSection(secId);
+  renderSidebar();
+}
+
+function toggleSection(secId, si) {
+  if (!activeMonthId) return;
+  const mo = db.months[activeMonthId];
+  mo.sections[si].open = !mo.sections[si].open;
+  saveDb();
+  const head = document.querySelector(`#sec_${secId} .section-head`);
+  const body = document.getElementById(`body_${secId}`);
+  if (head) head.classList.toggle('open');
+  if (body) body.classList.toggle('open');
+}
+
+function updateIncome(val) {
+  if (!activeMonthId) return;
+  db.months[activeMonthId].income = parseFloat(val) || 0;
+  saveDb();
+  refreshSummary();
+  renderSidebar();
+}
+
+function updateSpent(secId, itemIdx, val) {
+  if (!activeMonthId) return;
+  const mo = db.months[activeMonthId];
+  const sec = mo.sections.find(s => s.id === secId);
+  if (!sec) return;
+  sec.items[itemIdx].spent = val;
+  saveDb();
+  refreshSummary();
+  refreshSection(secId);
+  renderSidebar();
+}
+
+function refreshSummary() {
+  if (!activeMonthId) return;
+  const mo = db.months[activeMonthId];
+  const allItems = mo.sections.flatMap(s => s.items);
+  const totalBudget = allItems.reduce((a, i) => a + i.b, 0);
+  const totalSpent = allItems.reduce((a, i) => a + (parseFloat(i.spent) || 0), 0);
+  const balance = mo.income - totalSpent;
+  const pct = mo.income ? Math.min(100, Math.round(totalSpent / mo.income * 100)) : 0;
+  const barColor = totalSpent > mo.income ? '#E24B4A' : totalSpent > mo.income * 0.85 ? '#EF9F27' : '#1D9E75';
+  const balClass = balance < 0 ? 'bad' : balance < 5000 ? 'warn' : 'good';
+
+  const cards = document.querySelectorAll('.card');
+  if (cards.length < 4) return;
+  cards[0].querySelector('.card-value').textContent = ksh(mo.income);
+  const spentCard = cards[1];
+  spentCard.querySelector('.card-value').textContent = ksh(totalSpent);
+  spentCard.querySelector('.card-value').className = `card-value ${totalSpent > mo.income ? 'bad' : 'warn'}`;
+  const fill = spentCard.querySelector('.card-bar-fill');
+  if (fill) { fill.style.width = pct + '%'; fill.style.background = barColor; }
+  const note = spentCard.querySelector('.card-note');
+  if (note) note.textContent = pct + '% of income';
+  const balEl = cards[2].querySelector('.card-value');
+  balEl.textContent = ksh(balance);
+  balEl.className = `card-value ${balClass}`;
+  cards[3].querySelector('.card-value').textContent = ksh(totalBudget);
+  cards[3].querySelector('.card-note').textContent = `${mo.sections.flatMap(s=>s.items).length} items across ${mo.sections.length} categories`;
+}
+
+function refreshSection(secId) {
+  if (!activeMonthId) return;
+  const mo = db.months[activeMonthId];
+  const sec = mo.sections.find(s => s.id === secId);
+  if (!sec) return;
+
+  const totalBudget = sec.items.reduce((a, i) => a + i.b, 0);
+  const totalSpent = sec.items.reduce((a, i) => a + (parseFloat(i.spent) || 0), 0);
+  const pct = totalBudget ? Math.min(100, Math.round(totalSpent / totalBudget * 100)) : 0;
+  const barColor = totalSpent > totalBudget ? '#E24B4A' : totalSpent > totalBudget * 0.8 ? '#EF9F27' : '#1D9E75';
+
+  const secEl = document.getElementById(`sec_${secId}`);
+  if (!secEl) return;
+  const meta = secEl.querySelector('.section-head-meta');
+  if (meta) meta.textContent = `${ksh(totalSpent)} spent / ${ksh(totalBudget)} budgeted`;
+  const fill = secEl.querySelector('.section-prog-fill');
+  if (fill) { fill.style.width = pct + '%'; fill.style.background = barColor; }
+
+  const tbody = secEl.querySelector('tbody');
+  if (tbody) {
+    const si = mo.sections.indexOf(sec);
+    tbody.innerHTML = sec.items.map((item, ii) => renderItem(secId, si, item, ii)).join('');
+  }
+}
+
+function addItem(secId, si) {
+  const nameEl = document.getElementById(`newName_${secId}`);
+  const budgetEl = document.getElementById(`newBudget_${secId}`);
+  const name = nameEl.value.trim();
+  const budget = parseFloat(budgetEl.value) || 0;
+  if (!name || !budget) { showToast('Please enter both a name and a budget amount.', 'amber'); return; }
+  const mo = db.months[activeMonthId];
+  mo.sections[si].items.push({ n: name, b: budget, spent: '' });
+  saveDb();
+  nameEl.value = ''; budgetEl.value = '';
+  renderTracker();
+}
+
+// ─── SECTIONS MANAGEMENT ─────────────────────────────────────────────────────
+function openNewSectionModal() { document.getElementById('newSectionModal').classList.add('open'); }
+
+function addSection() {
+  const name = document.getElementById('newSectionName').value.trim();
+  const priority = document.getElementById('newSectionPriority').value;
+  if (!name) { showToast('Please enter a category name.', 'amber'); return; }
+  const id = 'sec_' + Date.now();
+  db.months[activeMonthId].sections.push({ id, name, priority, open: true, items: [] });
+  saveDb();
+  closeModal('newSectionModal');
+  document.getElementById('newSectionName').value = '';
+  renderTracker();
+}
+
+// ─── HISTORY VIEW ────────────────────────────────────────────────────────────
+function showView(view) {
+  currentView = view;
+  if (view === 'history') renderHistory();
+  else if (activeMonthId) renderTracker();
+}
+
+function renderHistory() {
+  const months = Object.values(db.months).sort((a, b) => {
+    if (b.year !== a.year) return b.year - a.year;
+    const mo = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return mo.indexOf(b.month) - mo.indexOf(a.month);
+  });
+
+  if (!months.length) {
+    document.getElementById('mainContent').innerHTML = `<div class="empty"><div class="empty-title">No history yet</div><div class="empty-sub">Create a month to start tracking.</div><button class="btn primary" onclick="openNewMonthModal()">+ Create month</button></div>`;
+    return;
+  }
+
+  const cards = months.map(mo => {
+    const allItems = mo.sections.flatMap(s => s.items);
+    const totalSpent = allItems.reduce((a, i) => a + (parseFloat(i.spent) || 0), 0);
+    const balance = mo.income - totalSpent;
+    const pct = mo.income ? Math.min(100, Math.round(totalSpent / mo.income * 100)) : 0;
+    const barColor = totalSpent > mo.income ? '#E24B4A' : totalSpent > mo.income * 0.8 ? '#EF9F27' : '#1D9E75';
+    const itemsLogged = allItems.filter(i => i.spent !== '' && parseFloat(i.spent) > 0).length;
+    return `<div class="history-card" onclick="selectMonth('${mo.id}')">
+      <div class="history-card-month">${mo.month} ${mo.year}</div>
+      <div class="history-card-income">Income: ${ksh(mo.income)}</div>
+      <div class="history-stat"><span class="history-stat-label">Total spent</span><span class="history-stat-value" style="color:${barColor}">${ksh(totalSpent)}</span></div>
+      <div class="history-stat"><span class="history-stat-label">Balance</span><span class="history-stat-value" style="color:${balance<0?'#E24B4A':balance<5000?'#EF9F27':'#1D9E75'}">${ksh(balance)}</span></div>
+      <div class="history-stat"><span class="history-stat-label">Items logged</span><span class="history-stat-value">${itemsLogged} / ${allItems.length}</span></div>
+      <div class="history-bar"><div class="history-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+    </div>`;
+  }).join('');
+
+  const byYear = {};
+  months.forEach(mo => {
+    if (!byYear[mo.year]) byYear[mo.year] = { income: 0, spent: 0, count: 0 };
+    const totalSpent = mo.sections.flatMap(s => s.items).reduce((a, i) => a + (parseFloat(i.spent) || 0), 0);
+    byYear[mo.year].income += mo.income;
+    byYear[mo.year].spent += totalSpent;
+    byYear[mo.year].count++;
+  });
+  const yearSummary = Object.entries(byYear).sort((a,b) => b[0]-a[0]).map(([y, d]) =>
+    `<div class="card" style="flex:1;min-width:200px"><div class="card-label">${y} — ${d.count} month${d.count>1?'s':''}</div><div class="card-value">${ksh(d.spent)} spent</div><div class="card-note">of ${ksh(d.income)} total income</div></div>`
+  ).join('');
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="main-header">
+      <div><div class="main-title">History</div><div class="main-sub">Review all past months at a glance.</div></div>
+      <div class="header-actions"><button class="btn primary" onclick="openNewMonthModal()">+ New month</button></div>
+    </div>
+    ${Object.keys(byYear).length ? `<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:1.5rem">${yearSummary}</div>` : ''}
+    <div class="history-grid">${cards}</div>
+  `;
+}
+
+// ─── MODALS ──────────────────────────────────────────────────────────────────
+function openNewMonthModal() {
+  document.getElementById('newMonthYear').value = new Date().getFullYear();
+  document.getElementById('newMonthModal').classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+</script>
+</body>
+</html>
