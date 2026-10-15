@@ -31,7 +31,6 @@
 html { font-size: 16px; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-/* TOP BAR */
 .topbar { background: var(--text); color: white; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
 .topbar-brand { font-family: 'DM Serif Display', serif; font-size: 18px; letter-spacing: -0.3px; }
 .topbar-right { display: flex; align-items: center; gap: 12px; }
@@ -42,8 +41,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .topbar-btn.accent:hover { background: var(--green-mid); }
 .topbar-btn.danger { background: rgba(226,75,74,0.25); }
 .topbar-btn.danger:hover { background: rgba(226,75,74,0.4); }
-
-/* SYNC STATUS */
+  
 .sync-pill { display: flex; align-items: center; gap: 6px; font-size: 12px; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); border-radius: 20px; padding: 5px 12px; transition: all 0.2s; }
 .sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); flex-shrink: 0; }
 .sync-pill.synced .sync-dot { background: var(--green); }
@@ -51,12 +49,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .sync-pill.error .sync-dot { background: var(--red); }
 @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
-/* USER AVATAR */
 .user-chip { display: flex; align-items: center; gap: 7px; font-size: 12px; color: rgba(255,255,255,0.8); }
 .user-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.25); }
 .user-avatar-placeholder { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
 
-/* AUTH SCREEN */
 .auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 56px); padding: 2rem; text-align: center; }
 .auth-icon { font-size: 48px; margin-bottom: 1.5rem; }
 .auth-title { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 0.75rem; }
@@ -69,7 +65,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .sign-in-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
 .auth-note { font-size: 12px; color: var(--text3); margin-top: 1.25rem; max-width: 380px; line-height: 1.5; }
 
-/* LAYOUT */
 .layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 56px); }
 .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.25rem 0; overflow-y: auto; }
 .sidebar-section { padding: 0 1rem; margin-bottom: 1.25rem; }
@@ -87,7 +82,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .month-item.active .del-month-btn { opacity: 0.6; }
 .month-item.active .del-month-btn:hover { opacity: 1; }
 
-/* MAIN */
 .main { padding: 2rem; overflow-y: auto; }
 .main-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.75rem; gap: 1rem; }
 .main-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); }
@@ -98,7 +92,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .btn.primary { background: var(--text); color: white; border-color: var(--text); }
 .btn.primary:hover { background: #333; }
 
-/* SUMMARY CARDS */
 .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 2rem; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; }
 .card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.5px; color: var(--text3); text-transform: uppercase; margin-bottom: 6px; }
@@ -110,19 +103,20 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .card-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
 .card-note { font-size: 11px; color: var(--text3); margin-top: 5px; }
 
-/* INCOME BAR */
 .income-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.5rem; }
 .income-row label { font-size: 13px; color: var(--text2); flex-shrink: 0; }
 .income-input { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; border: 1px solid var(--border-mid); border-radius: var(--radius); padding: 6px 12px; width: 160px; color: var(--text); background: var(--bg); }
 .income-input:focus { outline: none; border-color: var(--green); }
 .income-hint { font-size: 12px; color: var(--text3); margin-left: auto; }
 
-/* SECTIONS */
 .section { margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
 .section-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; background: var(--surface); transition: background 0.12s; user-select: none; }
 .section-head:hover { background: var(--surface2); }
 .section-head .chevron { font-size: 13px; color: var(--text3); transition: transform 0.2s; flex-shrink: 0; }
 .section-head.open .chevron { transform: rotate(180deg); }
+.del-section-btn { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 13px; padding: 3px 6px; border-radius: 5px; opacity: 0; transition: opacity 0.15s, color 0.15s; flex-shrink: 0; }
+.section-head:hover .del-section-btn { opacity: 1; }
+.del-section-btn:hover { color: var(--red); }
 .section-head-info { flex: 1; min-width: 0; }
 .section-head-name { font-size: 14px; font-weight: 500; color: var(--text); }
 .section-head-meta { font-size: 12px; color: var(--text3); margin-top: 1px; }
@@ -136,7 +130,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .section-body { display: none; }
 .section-body.open { display: block; }
 
-/* ITEMS TABLE */
 .items-table { width: 100%; border-collapse: collapse; }
 .items-table thead th { font-size: 10px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text3); padding: 8px 16px; text-align: left; background: var(--surface2); border-bottom: 1px solid var(--border); }
 .items-table thead th:last-child, .items-table thead th:nth-child(2) { text-align: right; }
@@ -154,7 +147,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .badge-over { background: var(--red-light); color: #A32D2D; }
 .badge-exact { background: var(--blue-light); color: #185FA5; }
 
-/* ADD ITEM ROW */
 .add-item-row { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: var(--surface2); border-top: 1px solid var(--border); }
 .add-item-row input { font-family: 'DM Sans', sans-serif; font-size: 13px; border: 1px solid var(--border-mid); border-radius: 8px; padding: 5px 10px; background: var(--surface); color: var(--text); }
 .add-item-row input:focus { outline: none; border-color: var(--green); }
@@ -170,12 +162,10 @@ tr:hover .del-item-btn { opacity: 1; }
 .add-item-btn { background: var(--green); color: white; border: none; border-radius: 8px; padding: 5px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; }
 .add-item-btn:hover { background: var(--green-mid); }
 
-/* EMPTY STATE */
 .empty { text-align: center; padding: 4rem 2rem; }
 .empty-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--text2); margin-bottom: 8px; }
 .empty-sub { font-size: 14px; color: var(--text3); margin-bottom: 1.5rem; }
 
-/* MODAL */
 .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
 .modal { background: var(--surface); border-radius: var(--radius-lg); padding: 1.75rem; width: 420px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
@@ -188,7 +178,6 @@ tr:hover .del-item-btn { opacity: 1; }
 .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.25rem; }
 .modal-note { font-size: 12px; color: var(--text3); margin-top: 0.75rem; font-style: italic; }
 
-/* HISTORY VIEW */
 .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
 .history-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; cursor: pointer; transition: all 0.15s; }
 .history-card:hover { border-color: var(--green); box-shadow: 0 2px 12px rgba(29,158,117,0.1); }
@@ -200,12 +189,10 @@ tr:hover .del-item-btn { opacity: 1; }
 .history-bar { width: 100%; height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 10px; overflow: hidden; }
 .history-bar-fill { height: 100%; border-radius: 2px; }
 
-/* TABS */
 .tabs { display: flex; gap: 4px; background: var(--surface2); padding: 4px; border-radius: var(--radius); margin-bottom: 1.5rem; width: fit-content; }
 .tab { font-size: 13px; padding: 6px 16px; border-radius: 7px; cursor: pointer; border: none; background: none; font-family: 'DM Sans', sans-serif; color: var(--text2); transition: all 0.12s; }
 .tab.active { background: var(--surface); color: var(--text); font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 
-/* TOAST */
 .toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
 .toast { background: var(--text); color: white; font-size: 13px; padding: 10px 18px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; display: flex; align-items: center; gap: 8px; max-width: 320px; }
 .toast.show { opacity: 1; transform: translateY(0); }
@@ -213,7 +200,6 @@ tr:hover .del-item-btn { opacity: 1; }
 .toast.red { background: #A32D2D; }
 .toast.amber { background: #7A4A00; }
 
-/* RESPONSIVE */
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar { display: none; }
@@ -246,7 +232,6 @@ tr:hover .del-item-btn { opacity: 1; }
   </div>
 </div>
 
-<!-- Auth screen (shown when signed out) -->
 <div id="authScreen">
   <div class="auth-screen">
     <div class="auth-icon">📊</div>
@@ -271,7 +256,6 @@ tr:hover .del-item-btn { opacity: 1; }
   </div>
 </div>
 
-<!-- Main app (shown when signed in) -->
 <div id="appShell" style="display:none">
   <div class="layout">
     <aside class="sidebar">
@@ -293,7 +277,6 @@ tr:hover .del-item-btn { opacity: 1; }
   </div>
 </div>
 
-<!-- New Month Modal -->
 <div class="modal-overlay" id="newMonthModal">
   <div class="modal">
     <div class="modal-title">Create new month</div>
@@ -334,7 +317,6 @@ tr:hover .del-item-btn { opacity: 1; }
   </div>
 </div>
 
-<!-- Add Section Modal -->
 <div class="modal-overlay" id="newSectionModal">
   <div class="modal">
     <div class="modal-title">Add category</div>
@@ -358,22 +340,8 @@ tr:hover .del-item-btn { opacity: 1; }
   </div>
 </div>
 
-<!-- Toast container -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- ─────────────────────────────────────────────────────────────────────────
-     GOOGLE IDENTITY / DRIVE CONFIGURATION
-     ──────────────────────────────────────────────────────────────────────
-     SETUP INSTRUCTIONS:
-     1. Go to https://console.cloud.google.com/
-     2. Create a project (or select an existing one)
-     3. Enable these APIs: "Google Drive API" and "Google Picker API"
-     4. Under "Credentials", create an OAuth 2.0 Client ID (Web application)
-        - Add your file's origin to Authorized JavaScript Origins
-          e.g. http://localhost or file:// or https://yourdomain.com
-     5. Create an API Key under Credentials
-     6. Paste both values below
-     ──────────────────────────────────────────────────────────────────────── -->
 <script>
   const GOOGLE_CLIENT_ID = '5482793251-ujlorv6sspjf4ntrcg1uqfepd4rf6eut.apps.googleusercontent.com';
   const GOOGLE_API_KEY   = 'AIzaSyBL-OwhJ7whZtjH--rNeSoivhh4IblysB8';
@@ -385,18 +353,17 @@ tr:hover .del-item-btn { opacity: 1; }
 <script src="https://apis.google.com/js/api.js" async defer onload="gapiLoaded()"></script>
 
 <script>
-// ─── STATE ───────────────────────────────────────────────────────────────────
+
 let db = { months: {} };
 let activeMonthId = null;
 let currentView = 'tracker';
-let driveFileId = null;       // ID of budget-tracker-data.json in Drive
-let accessToken = null;       // current OAuth access token
-let saveTimer = null;         // debounce timer for Drive writes
+let driveFileId = null; 
+let accessToken = null;
+let saveTimer = null;
 let gapiReady = false;
 let gisReady = false;
 let tokenClient = null;
 
-// ─── TEMPLATE DATA ───────────────────────────────────────────────────────────
 const MAY_TEMPLATE = [
   { id: 'basics', name: 'Basics', priority: 'vhigh', open: true, items: [
     {n:'Rent',b:8000},{n:'Transport',b:6000},{n:'Shopping',b:5000},{n:'Hair',b:1000},{n:'Sanlam',b:5000},{n:'Ziidi',b:5000},{n:'Data',b:1000}
@@ -421,7 +388,6 @@ const MAY_TEMPLATE = [
   ]}
 ];
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
 function ksh(v) { return 'Ksh ' + Math.round(v).toLocaleString(); }
 function monthId(m, y) { return `${y}_${m}`; }
 
@@ -446,7 +412,6 @@ function setSyncStatus(state, label) {
   pill.style.display = 'flex';
 }
 
-// ─── GOOGLE API LOADING ──────────────────────────────────────────────────────
 function gapiLoaded() {
   gapi.load('client', async () => {
     await gapi.client.init({ apiKey: GOOGLE_API_KEY, discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] });
@@ -464,7 +429,6 @@ function maybeInitGis() {
   });
   gisReady = true;
 
-  // If user already granted previously, try to restore silently
   const savedToken = sessionStorage.getItem('gapi_access_token');
   if (savedToken) {
     accessToken = savedToken;
@@ -486,7 +450,6 @@ function handleTokenResponse(resp) {
   loadFromDrive();
 }
 
-// ─── AUTH ─────────────────────────────────────────────────────────────────────
 function handleSignIn() {
   if (!gisReady) { showToast('Google APIs still loading, please wait…', 'amber'); return; }
   tokenClient.requestAccessToken({ prompt: '' });
@@ -525,7 +488,6 @@ function showAppShell() {
   document.getElementById('historyBtn').style.display = '';
   document.getElementById('newMonthBtn').style.display = '';
 
-  // Show user info
   fetchUserInfo();
 }
 
@@ -546,8 +508,6 @@ async function fetchUserInfo() {
   } catch(e) {}
 }
 
-// ─── DRIVE I/O ────────────────────────────────────────────────────────────────
-
 async function findDriveFile() {
   const res = await gapi.client.drive.files.list({
     q: `name='${DRIVE_FILE_NAME}' and trashed=false and 'appDataFolder' in parents`,
@@ -560,7 +520,6 @@ async function findDriveFile() {
 }
 
 async function findDriveFileInRoot() {
-  // Fallback: look in drive root (drive.file scope only sees files the app created)
   const res = await gapi.client.drive.files.list({
     q: `name='${DRIVE_FILE_NAME}' and trashed=false`,
     fields: 'files(id,name)',
@@ -575,7 +534,7 @@ async function readDriveFile(fileId) {
     path: `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
     method: 'GET',
   });
-  return res.body; // raw JSON string
+  return res.body; 
 }
 
 async function createDriveFile(content) {
@@ -614,7 +573,6 @@ async function loadFromDrive() {
       const parsed = JSON.parse(raw);
       if (parsed && parsed.months) db = parsed;
     }
-    // else: no file yet → fresh start, will be created on first save
     setSyncStatus('synced', 'Synced');
     renderSidebar();
     const months = Object.values(db.months).sort((a,b) => {
@@ -648,14 +606,12 @@ async function saveToDrive() {
   }
 }
 
-// Debounced save — waits 800ms after last change before writing to Drive
 function saveDb() {
   clearTimeout(saveTimer);
   setSyncStatus('syncing', 'Unsaved changes…');
   saveTimer = setTimeout(saveToDrive, 800);
 }
 
-// ─── MONTH MANAGEMENT ────────────────────────────────────────────────────────
 function createMonth() {
   const m = document.getElementById('newMonthMonth').value;
   const y = parseInt(document.getElementById('newMonthYear').value);
@@ -701,7 +657,6 @@ function selectMonth(id) {
   renderTracker();
 }
 
-// ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 function renderSidebar() {
   const list = document.getElementById('monthList');
   const months = Object.values(db.months).sort((a, b) => {
@@ -723,7 +678,6 @@ function renderSidebar() {
   }).join('');
 }
 
-// ─── TRACKER VIEW ────────────────────────────────────────────────────────────
 function renderTracker() {
   if (!activeMonthId || !db.months[activeMonthId]) return;
   const mo = db.months[activeMonthId];
@@ -799,6 +753,7 @@ function renderSection(sec, si) {
         <div class="section-head-meta">${ksh(totalSpent)} spent / ${ksh(totalBudget)} budgeted</div>
       </div>
       <span class="priority-chip ${chipClass}">${chipLabel}</span>
+      <button class="del-section-btn" onclick="deleteSection('${sec.id}', event)" title="Delete category">✕</button>
       <span class="chevron">▾</span>
     </div>
     <div class="section-prog"><div class="section-prog-fill" style="width:${pct}%;background:${barColor}"></div></div>
@@ -967,8 +922,7 @@ function addItem(secId, si) {
   nameEl.value = ''; budgetEl.value = '';
   renderTracker();
 }
-
-// ─── SECTIONS MANAGEMENT ─────────────────────────────────────────────────────
+  
 function openNewSectionModal() { document.getElementById('newSectionModal').classList.add('open'); }
 
 function addSection() {
@@ -983,7 +937,25 @@ function addSection() {
   renderTracker();
 }
 
-// ─── HISTORY VIEW ────────────────────────────────────────────────────────────
+function deleteSection(secId, e) {
+  e.stopPropagation(); 
+  const sec = db.months[activeMonthId].sections.find(s => s.id === secId);
+  if (!sec) return;
+  const itemCount = sec.items.length;
+  const msg = itemCount > 0
+    ? `Delete "${sec.name}"? It has ${itemCount} item${itemCount > 1 ? 's' : ''} inside. This cannot be undone.`
+    : `Delete "${sec.name}"? This cannot be undone.`;
+  if (!confirm(msg)) return;
+  db.months[activeMonthId].sections = db.months[activeMonthId].sections.filter(s => s.id !== secId);
+  saveDb();
+  refreshSummary();
+  renderSidebar();
+  
+  const el = document.getElementById(`sec_${secId}`);
+  if (el) el.remove();
+  showToast(`"${sec.name}" deleted`, 'green');
+}
+
 function showView(view) {
   currentView = view;
   if (view === 'history') renderHistory();
@@ -1041,7 +1013,6 @@ function renderHistory() {
   `;
 }
 
-// ─── MODALS ──────────────────────────────────────────────────────────────────
 function openNewMonthModal() {
   document.getElementById('newMonthYear').value = new Date().getFullYear();
   document.getElementById('newMonthModal').classList.add('open');
