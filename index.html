@@ -29,7 +29,6 @@ html{font-size:16px}body{font-family:'DM Sans',sans-serif;background:var(--bg);c
 .topbar-btn.danger{background:rgba(226,75,74,0.25)}
 .topbar-btn.danger:hover{background:rgba(226,75,74,0.4)}
 
-/* AUTH */
 .auth-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 56px);padding:2rem;text-align:center}
 .auth-icon{font-size:48px;margin-bottom:1.5rem}
 .auth-title{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:.75rem}
@@ -40,7 +39,6 @@ html{font-size:16px}body{font-family:'DM Sans',sans-serif;background:var(--bg);c
 .sign-in-btn:hover{border-color:var(--green);box-shadow:0 4px 16px rgba(29,158,117,0.15)}
 .sign-in-btn svg{width:20px;height:20px;flex-shrink:0}
 
-/* LAYOUT */
 .layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
 .sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1rem 0;overflow-y:auto;display:flex;flex-direction:column}
 .sidebar-section{padding:0 .75rem;margin-bottom:1rem}
@@ -62,7 +60,6 @@ html{font-size:16px}body{font-family:'DM Sans',sans-serif;background:var(--bg);c
 .month-item:hover .del-month-btn{opacity:1}
 .month-item.active .del-month-btn{opacity:0.6}
 
-/* MAIN */
 .main{padding:2rem;overflow-y:auto;max-width:1100px}
 .main-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.75rem;gap:1rem}
 .main-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text)}
@@ -78,7 +75,6 @@ html{font-size:16px}body{font-family:'DM Sans',sans-serif;background:var(--bg);c
 .btn.danger:hover{background:var(--red);color:white}
 .btn.sm{padding:5px 10px;font-size:12px}
 
-/* SUMMARY CARDS */
 .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.75rem}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem}
 .card-label{font-size:11px;font-weight:500;letter-spacing:.5px;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
@@ -90,7 +86,6 @@ html{font-size:16px}body{font-family:'DM Sans',sans-serif;background:var(--bg);c
 .card-bar-fill{height:100%;border-radius:2px;transition:width .3s}
 .card-note{font-size:11px;color:var(--text3);margin-top:5px}
 
-/* SECTION CARDS */
 .section{margin-bottom:12px;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface)}
 .section-head{display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:var(--surface);transition:background 0.12s;user-select:none}
 .section-head:hover{background:var(--surface2)}
@@ -112,7 +107,6 @@ html{font-size:16px}body{font-family:'DM Sans',sans-serif;background:var(--bg);c
 .section-head:hover .del-section-btn{opacity:1}
 .del-section-btn:hover{color:var(--red)}
 
-/* ITEMS TABLE */
 .items-table{width:100%;border-collapse:collapse}
 .items-table thead th{font-size:10px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);padding:8px 16px;text-align:left;background:var(--surface2);border-bottom:1px solid var(--border)}
 .items-table thead th:last-child,.items-table thead th:nth-child(2){text-align:right}
@@ -144,14 +138,12 @@ tr:hover .del-item-btn{opacity:1}
 .add-item-btn{background:var(--green);color:white;border:none;border-radius:8px;padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
 .add-item-btn:hover{background:var(--green-mid)}
 
-/* INCOME ROW */
 .income-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
 .income-row label{font-size:13px;color:var(--text2);flex-shrink:0}
 .income-input{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;border:1px solid var(--border-mid);border-radius:var(--radius);padding:6px 12px;width:160px;color:var(--text);background:var(--bg)}
 .income-input:focus{outline:none;border-color:var(--green)}
 .income-hint{font-size:12px;color:var(--text3);margin-left:auto}
 
-/* TRANSACTIONS */
 .tx-list{display:flex;flex-direction:column;gap:2px}
 .tx-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);transition:background .12s}
 .tx-item:hover{background:var(--surface2)}
@@ -169,13 +161,11 @@ tr:hover .del-item-btn{opacity:1}
 .tx-del-btn:hover{color:var(--red)}
 .tx-cat-chip{font-size:10px;padding:1px 7px;border-radius:20px;background:var(--surface2);color:var(--text3);flex-shrink:0}
 
-/* CHARTS */
 .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.75rem}
 .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
 .chart-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:1rem}
 .chart-wrap{position:relative;height:200px}
 
-/* SAVINGS GOALS */
 .goals-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
 .goal-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
 .goal-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:2px}
@@ -189,7 +179,6 @@ tr:hover .del-item-btn{opacity:1}
 .goal-del-btn{background:none;border:1px solid var(--border-mid);color:var(--text3);font-family:'DM Sans',sans-serif;font-size:12px;padding:4px 10px;border-radius:8px;cursor:pointer}
 .goal-del-btn:hover{border-color:var(--red);color:var(--red)}
 
-/* DEBT */
 .debt-list{display:flex;flex-direction:column;gap:10px}
 .debt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
 .debt-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
@@ -202,7 +191,6 @@ tr:hover .del-item-btn{opacity:1}
 .debt-bar-fill{height:100%;border-radius:3px;background:var(--green);transition:width .4s}
 .debt-actions{display:flex;gap:8px;align-items:center}
 
-/* MPESA */
 .mpesa-textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:13px;border:1px solid var(--border-mid);border-radius:var(--radius);padding:10px 12px;color:var(--text);background:var(--bg);resize:vertical;min-height:140px;line-height:1.5}
 .mpesa-textarea:focus{outline:none;border-color:var(--green)}
 .parsed-list{display:flex;flex-direction:column;gap:6px;margin-top:1rem}
@@ -214,7 +202,6 @@ tr:hover .del-item-btn{opacity:1}
 .parsed-amount{font-size:13px;font-weight:500;color:var(--red);flex-shrink:0}
 .parsed-cat{font-size:12px;border:1px solid var(--border-mid);border-radius:7px;padding:3px 8px;background:var(--surface);color:var(--text2);font-family:'DM Sans',sans-serif;cursor:pointer}
 
-/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border-radius:var(--radius-lg);padding:1.75rem;width:460px;max-width:95vw;box-shadow:0 20px 60px rgba(0,0,0,0.15);max-height:90vh;overflow-y:auto}
@@ -227,7 +214,6 @@ tr:hover .del-item-btn{opacity:1}
 .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
 .modal-note{font-size:12px;color:var(--text3);margin-top:.75rem;font-style:italic}
 
-/* HISTORY */
 .history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
 .history-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;cursor:pointer;transition:all .15s}
 .history-card:hover{border-color:var(--green);box-shadow:0 2px 12px rgba(29,158,117,0.1)}
@@ -239,17 +225,14 @@ tr:hover .del-item-btn{opacity:1}
 .history-bar{width:100%;height:4px;background:var(--surface2);border-radius:2px;margin-top:10px;overflow:hidden}
 .history-bar-fill{height:100%;border-radius:2px}
 
-/* EMPTY */
 .empty{text-align:center;padding:3rem 2rem}
 .empty-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text2);margin-bottom:8px}
 .empty-sub{font-size:13px;color:var(--text3);margin-bottom:1.5rem;line-height:1.6}
 
-/* TABS */
 .page-tabs{display:flex;gap:4px;background:var(--surface2);padding:4px;border-radius:var(--radius);margin-bottom:1.5rem;width:fit-content}
 .page-tab{font-size:13px;padding:6px 16px;border-radius:7px;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;color:var(--text2);transition:all .12s}
 .page-tab.active{background:var(--surface);color:var(--text);font-weight:500;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
 
-/* TOAST */
 .toast-container{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:var(--text);color:white;font-size:13px;padding:10px 18px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.2);opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;display:flex;align-items:center;gap:8px;max-width:320px}
 .toast.show{opacity:1;transform:translateY(0)}
@@ -257,11 +240,9 @@ tr:hover .del-item-btn{opacity:1}
 .toast.red{background:#A32D2D}
 .toast.amber{background:#7A4A00}
 
-/* RESPONSIVE */
 @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.summary{grid-template-columns:repeat(2,1fr)}.chart-grid{grid-template-columns:1fr}.main{padding:1rem}}
 @media(max-width:560px){.summary{grid-template-columns:1fr 1fr}}
 
-/* DIVIDER */
 .section-divider{font-size:11px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);padding:.75rem 0 .5rem;margin-top:.5rem}
 </style>
 </head>
@@ -281,7 +262,6 @@ tr:hover .del-item-btn{opacity:1}
   </div>
 </div>
 
-<!-- AUTH SCREEN -->
 <div id="authScreen">
   <div class="auth-screen">
     <div class="auth-icon">📊</div>
@@ -300,7 +280,6 @@ tr:hover .del-item-btn{opacity:1}
   </div>
 </div>
 
-<!-- APP SHELL -->
 <div id="appShell" style="display:none">
   <div class="layout">
     <aside class="sidebar" id="sidebar">
@@ -323,7 +302,6 @@ tr:hover .del-item-btn{opacity:1}
   </div>
 </div>
 
-<!-- MODALS -->
 <div class="modal-overlay" id="newMonthModal">
   <div class="modal">
     <div class="modal-title">Create new month</div>
@@ -485,7 +463,7 @@ tr:hover .del-item-btn{opacity:1}
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://apis.google.com/js/api.js" async defer onload="gapiLoaded()"></script>
 <script>
-// ─── STATE ────────────────────────────────────────────────────────────────────
+
 let db = { months: {}, goals: [], debts: [] };
 let activeMonthId = null;
 let currentPage = 'budget';
@@ -510,7 +488,6 @@ const MAY_TEMPLATE = [
 
 const DEFAULT_CATS = ['Food & drinks','Transport','Shopping','Entertainment','Health','Utilities','Rent','Savings','Investment','Other'];
 
-// ─── HELPERS ──────────────────────────────────────────────────────────────────
 function ksh(v){return 'Ksh '+Math.round(v).toLocaleString();}
 function monthId(m,y){return `${y}_${m}`;}
 function today(){return new Date().toISOString().slice(0,10);}
@@ -535,7 +512,6 @@ function getCats(){
   return [...new Set([...sectionNames,...DEFAULT_CATS])];
 }
 
-// ─── GAPI / AUTH ──────────────────────────────────────────────────────────────
 function gapiLoaded(){
   gapi.load('client',async()=>{
     await gapi.client.init({apiKey:GOOGLE_API_KEY,discoveryDocs:['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']});
@@ -587,7 +563,6 @@ async function fetchUserInfo(){
   }catch(e){}
 }
 
-// ─── DRIVE ────────────────────────────────────────────────────────────────────
 async function loadFromDrive(){
   setSyncStatus('syncing','Loading…');
   try{
@@ -627,7 +602,6 @@ async function saveToDrive(){
 }
 function saveDb(){clearTimeout(saveTimer);setSyncStatus('syncing','Unsaved…');saveTimer=setTimeout(saveToDrive,800);}
 
-// ─── ROUTING ──────────────────────────────────────────────────────────────────
 function setPage(page){
   currentPage=page;
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
@@ -648,7 +622,6 @@ function destroyCharts(){
 }
 function renderEmpty(){document.getElementById('mainContent').innerHTML=`<div class="empty"><div class="empty-title">No months yet</div><div class="empty-sub">Create your first month to start tracking.</div><button class="btn primary" onclick="openNewMonthModal()">+ Create month</button></div>`;}
 
-// ─── MONTH MANAGEMENT ─────────────────────────────────────────────────────────
 function sortMonths(a,b){if(b.year!==a.year)return b.year-a.year;return MONTHS_ORDER.indexOf(b.month)-MONTHS_ORDER.indexOf(a.month);}
 function createMonth(){
   const m=document.getElementById('newMonthMonth').value;
@@ -687,7 +660,6 @@ function renderSidebar(){
   }).join('');
 }
 
-// ─── BUDGET PAGE ──────────────────────────────────────────────────────────────
 function renderBudget(){
   if(!activeMonthId||!db.months[activeMonthId]){renderEmpty();return;}
   const mo=db.months[activeMonthId];
@@ -774,7 +746,6 @@ function renderItem(secId,si,item,ii){
   </tr>`;
 }
 
-// Budget mutations
 function toggleSection(secId,si){
   if(!activeMonthId)return;
   db.months[activeMonthId].sections[si].open=!db.months[activeMonthId].sections[si].open;
@@ -854,7 +825,6 @@ function refreshBudgetSummary(){
   cards[3].querySelector('.card-note').textContent=`${allItems.length} items`;
 }
 
-// ─── TRANSACTIONS ─────────────────────────────────────────────────────────────
 function openTxModal(prefill){
   const mo=db.months[activeMonthId];if(!mo)return;
   const cats=getCats();
@@ -894,7 +864,6 @@ function renderTransactions(){
   const totalIncome=txs.filter(t=>t.type==='income').reduce((a,t)=>a+t.amount,0);
   const totalExpense=txs.filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0);
 
-  // Group by date
   const byDate={};
   txs.forEach(t=>{if(!byDate[t.date])byDate[t.date]=[];byDate[t.date].push(t);});
   const datesSorted=Object.keys(byDate).sort((a,b)=>b.localeCompare(a));
@@ -935,13 +904,11 @@ function renderTransactions(){
     ${txs.length?listHtml:`<div class="empty"><div class="empty-title">No transactions yet</div><div class="empty-sub">Log your first expense or use M-Pesa import to get started.</div><button class="btn green" onclick="openTxModal()">+ Add transaction</button></div>`}`;
 }
 
-// ─── CHARTS ───────────────────────────────────────────────────────────────────
 function renderCharts(){
   if(!activeMonthId||!db.months[activeMonthId]){renderEmpty();return;}
   const mo=db.months[activeMonthId];
   const txs=(mo.transactions||[]).filter(t=>t.type==='expense');
 
-  // Daily spending data
   const daysInMonth=new Date(mo.year,MONTHS_ORDER.indexOf(mo.month)+1,0).getDate();
   const dailyMap={};
   for(let d=1;d<=daysInMonth;d++)dailyMap[String(d).padStart(2,'0')]=0;
@@ -949,14 +916,12 @@ function renderCharts(){
   const dailyLabels=Object.keys(dailyMap).map(d=>String(parseInt(d)));
   const dailyVals=Object.values(dailyMap);
 
-  // Category breakdown
   const catMap={};
   txs.forEach(t=>{catMap[t.cat]=(catMap[t.cat]||0)+t.amount;});
   const catLabels=Object.keys(catMap);
   const catVals=Object.values(catMap);
   const catColors=['#1D9E75','#378ADD','#EF9F27','#E24B4A','#7B5EA7','#F06292','#26C6DA','#AB47BC','#9E9E75','#4DB6AC'];
 
-  // Month-on-month (last 6 months)
   const allMonths=Object.values(db.months).sort(sortMonths).slice(0,6).reverse();
   const momLabels=allMonths.map(m=>m.month.slice(0,3));
   const momVals=allMonths.map(m=>(m.transactions||[]).filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0));
@@ -994,7 +959,6 @@ function renderCharts(){
   });
 }
 
-// ─── SAVINGS GOALS ────────────────────────────────────────────────────────────
 function renderSavings(){
   const goals=db.goals||[];
   document.getElementById('mainContent').innerHTML=`
@@ -1054,7 +1018,6 @@ function saveTopup(){
   saveDb();closeModal('topupModal');renderSavings();showToast(`+${ksh(amount)} added to ${goal.name}`,'green');
 }
 
-// ─── DEBTS ────────────────────────────────────────────────────────────────────
 function renderDebts(){
   const debts=db.debts||[];
   const iOwe=debts.filter(d=>d.type==='owe');
@@ -1126,7 +1089,6 @@ function saveRepayment(){
   saveDb();closeModal('repayModal');renderDebts();showToast(`${ksh(amount)} payment logged`,'green');
 }
 
-// ─── M-PESA SMS IMPORT ────────────────────────────────────────────────────────
 function renderMpesa(){
   document.getElementById('mainContent').innerHTML=`
     <div class="main-header">
@@ -1153,30 +1115,25 @@ function parseMpesa(){
   const raw=document.getElementById('mpesaInput').value;
   if(!raw.trim()){showToast('Paste some SMS messages first','amber');return;}
 
-  // Split into individual messages
   const messages=raw.split(/\n{2,}|(?=\b[A-Z]{2}\d{8,}\b)/g).map(s=>s.trim()).filter(s=>s.length>10);
   const results=[];
 
   messages.forEach(msg=>{
-    // Match amount patterns: Ksh150.00 or Ksh1,500.00
     const amountMatch=msg.match(/Ksh[\s]?([\d,]+\.?\d*)/i);
     if(!amountMatch)return;
     const amount=parseFloat(amountMatch[1].replace(/,/g,''));
     if(!amount)return;
 
-    // Determine type
     const isSent=/sent to|paid to|buy goods|withdraw|payment to/i.test(msg);
     const isReceived=/received from|you have received/i.test(msg);
-    if(!isSent&&!isReceived)return; // skip balance-only messages
+    if(!isSent&&!isReceived)return; 
 
-    // Extract merchant/person name
     let desc='M-Pesa transaction';
     const sentMatch=msg.match(/(?:sent to|paid to|buy goods.*?at)\s+([A-Z][A-Z0-9\s]+?)(?:\s+\d|\s+on\s)/i);
     const rcvMatch=msg.match(/received from\s+([A-Z][A-Z0-9\s]+?)(?:\s+on|\s+\d)/i);
     if(sentMatch)desc=sentMatch[1].trim().replace(/\s+/g,' ');
     else if(rcvMatch)desc=rcvMatch[1].trim().replace(/\s+/g,' ');
 
-    // Extract date
     let date=today();
     const dateMatch=msg.match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
     if(dateMatch){
@@ -1185,7 +1142,6 @@ function parseMpesa(){
       date=`${fullY}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
     }
 
-    // Guess category
     const descLower=desc.toLowerCase();
     let cat='Other';
     if(/java|kfc|chicken|pizza|cafe|restaurant|hotel|naivas|quickmart|carrefour|food|lunch|dinner|groceries/i.test(descLower+msg))cat='Food & drinks';
@@ -1242,7 +1198,6 @@ function importSelected(){
   window._parsedTxs=[];
 }
 
-// ─── HISTORY ──────────────────────────────────────────────────────────────────
 function renderHistory(){
   const months=Object.values(db.months).sort(sortMonths);
   if(!months.length){renderEmpty();return;}
@@ -1281,7 +1236,6 @@ function renderHistory(){
     <div class="history-grid">${cards}</div>`;
 }
 
-// ─── MODALS ───────────────────────────────────────────────────────────────────
 function openNewMonthModal(){document.getElementById('newMonthYear').value=new Date().getFullYear();document.getElementById('newMonthModal').classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});});
